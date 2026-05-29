@@ -1,0 +1,8 @@
+graph TD
+    A[AI App Store Compliance] --> B["Apple Sec 1.2 (User Generated Content)"]
+    A --> C["Google Play Generative AI Policy"]
+    A --> D["Sec 5.1 (Privacy & Chat Logs)"]
+    
+    B --> B1["Toxicity Filter + Report Mechanism"]
+    C --> C1["Safety Shield + Block Feature"]
+    D --> D1["Clear Privacy Policy + Data Deletion Route"]

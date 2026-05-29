@@ -1,0 +1,7 @@
+graph TD
+    A[Production Crash / Sentry Alert] -->|1. Webhook Payload| B(Express Webhook Listener)
+    B -->|2. Trigger Workflow| C(GitHub Actions Runner)
+    C -->|3. Setup Agent Loop| D[Claude Agent CLI]
+    D -->|4. Test & Fix Code| E[Verify Suite Pass?]
+    E -->|Yes| F[5. Create GitHub Pull Request]
+    E -->|No| D

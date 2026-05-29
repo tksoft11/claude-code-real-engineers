@@ -1,0 +1,9 @@
+# .env
+HR_API_URL=https://hr.company.internal/api
+HR_API_KEY=hr-service-account-key
+
+PM_API_URL=https://pm.company.internal/api
+PM_API_KEY=pm-service-account-key
+
+DOCS_API_URL=https://docs.company.internal/api
+DOCS_API_KEY=docs-service-account-key

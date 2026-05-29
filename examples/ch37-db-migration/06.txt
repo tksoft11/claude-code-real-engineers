@@ -1,0 +1,7 @@
+
+---
+
+## 🧪 ตัวอย่าง Output — เมื่อเจอ Breaking Change
+
+สมมติ developer submit migration นี้:
+

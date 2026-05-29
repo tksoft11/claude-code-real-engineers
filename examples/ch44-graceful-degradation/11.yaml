@@ -1,0 +1,5 @@
+- alert: AIFallbackActivated
+  expr: rate(ai_fallback_total[5m]) > 0
+  annotations:
+    summary: "Primary AI provider ล้มเหลว — Fallback กำลังทำงาน"
+    description: "Switching from {{ $labels.from_provider }} to {{ $labels.to_provider }}"

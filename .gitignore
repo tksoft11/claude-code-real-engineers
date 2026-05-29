@@ -41,12 +41,18 @@ __pycache__/
 .venv/
 venv/
 
-# Internal planning docs (ไม่ใช่ส่วนหนึ่งของหนังสือ)
+# Book content (ไม่แจกฟรี — มีแค่ Code Examples ใน examples/)
+book-factory/
+automation-playground/
+OUTLINE.md
+extract_code.py
+
+# Internal planning docs
 implementation_plan.md
 problem_solution_mapping.md
 book_critique.md
 task.md
 walkthrough.md
 
-# skills/ directory มี git repo ของตัวเอง — ใช้ submodule ถ้าต้องการ
+# skills/ directory มี git repo ของตัวเอง
 skills/

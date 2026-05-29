@@ -1,0 +1,15 @@
+พบ Business Rules ที่ซ่อนในโค้ด:
+
+1. บรรทัด 847, order.php:
+   if ($order->total > 50000 && $customer->type == 'retail') {
+       $discount = 0.05;
+   }
+   → กฎ: ลูกค้า retail ที่สั่งซื้อเกิน 50,000 บาท ได้ส่วนลด 5%
+   (ไม่มีที่ไหนใน documentation พูดถึงกฎนี้)
+
+2. บรรทัด 1,203, payment.php:
+   if (date('H') >= 22 || date('H') < 6) {
+       $method = 'manual_review';
+   }
+   → กฎ: Payment หลัง 22:00 น. ต้องผ่าน manual review
+   (น่าจะมาจากความต้องการของทีม Finance ที่ลืมกันไปแล้ว)

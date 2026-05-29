@@ -1,0 +1,19 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "tools": [
+      {
+        "name": "read_file",
+        "description": "Read the complete contents of a file...",
+        "inputSchema": { ... }
+      },
+      {
+        "name": "write_file",
+        "description": "Create a new file or overwrite...",
+        "inputSchema": { ... }
+      },
+      ...
+    ]
+  }
+}

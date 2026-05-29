@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(src/**)",
+      "Write(tests/**)",
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(git status)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Bash(git push)",
+      "Bash(npm run deploy)",
+      "Write(.env*)"
+    ]
+  }
+}

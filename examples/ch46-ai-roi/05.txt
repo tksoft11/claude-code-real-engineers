@@ -1,0 +1,4 @@
+# ROI per day (เฉพาะถ้าต่อ Custom Metric)
+sum(increase(ai_hours_saved_total[24h])) * 500
+/
+sum(increase(ai_estimated_cost_usd_total[24h])) * 36

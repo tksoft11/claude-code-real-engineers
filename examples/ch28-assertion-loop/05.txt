@@ -1,0 +1,5 @@
+
+---
+
+## 🔗 Integration: Claude Code + Bug Hunter
+

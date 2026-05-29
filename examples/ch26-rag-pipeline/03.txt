@@ -1,0 +1,33 @@
+// prisma/schema.prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  filename  String
+  title     String
+  category  String   @default("general")
+  content   String
+  createdAt DateTime @default(now())
+  chunks    Chunk[]
+}
+
+model Chunk {
+  id         String                  @id @default(cuid())
+  documentId String
+  document   Document                @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  text       String
+  chunkIndex Int
+  embedding  Unsupported("vector(1536)")?
+  createdAt  DateTime               @default(now())
+
+  @@index([documentId])
+}

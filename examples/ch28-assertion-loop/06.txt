@@ -1,0 +1,10 @@
+
+---
+
+## 🎯 สรุปบทที่ 28
+
+| ส่วนประกอบ | หน้าที่ |
+|-----------|--------|
+| test-runner.ts | รัน tests + parse output เป็น structured failures |
+| bug-hunter.ts | Multi-turn conversation + apply fixes + re-run |
+| Code extraction | Parse 

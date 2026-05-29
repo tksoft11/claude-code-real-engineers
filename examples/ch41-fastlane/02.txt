@@ -1,0 +1,15 @@
+$ fastlane deploy
+        │
+        ├── [AI Pre-check] วิเคราะห์ Changelog + บอก risk
+        │
+        ├── [Cert Manager] Match — จัดการ certs อัตโนมัติ
+        │
+        ├── [Version Bump] อัปเดต version + build number
+        │
+        ├── [Test Runner] รัน unit tests
+        │
+        ├── [Builder] Build release binary
+        │
+        ├── [Uploader] ส่งขึ้น TestFlight / Play Store
+        │
+        └── [Notifier] แจ้ง Slack ว่า deploy สำเร็จ

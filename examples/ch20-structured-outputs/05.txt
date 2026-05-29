@@ -1,0 +1,7 @@
+
+---
+
+## 🔄 Structured Output Pipeline
+
+สำหรับ Production ให้สร้าง pipeline ที่ handle ทุกกรณี:
+

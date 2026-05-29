@@ -1,0 +1,20 @@
+"อ่านโค้ดทั้งหมดใน [directory]
+ สร้าง Markdown document ชื่อ docs/ARCHITECTURE.md ที่มี:
+
+ ## System Overview
+ [ระบบนี้ทำอะไร ในภาษาที่ non-technical คนเข้าใจได้]
+
+ ## Module Map
+ [แต่ละ folder/file ทำหน้าที่อะไร]
+
+ ## Data Flow
+ [ข้อมูลหลักไหลอย่างไรผ่านระบบ ตั้งแต่ input ถึง output]
+
+ ## Key Functions
+ [20 functions ที่สำคัญที่สุด พร้อมอธิบาย input/output]
+
+ ## Danger Zones
+ [โค้ดที่ซับซ้อน มี side effects ซ่อน หรือควรระวังเป็นพิเศษ]
+
+ ## External Dependencies
+ [ระบบ external อะไรที่โค้ดนี้ depend on: DB, APIs, services]"

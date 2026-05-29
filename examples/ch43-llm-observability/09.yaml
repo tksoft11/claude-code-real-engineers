@@ -1,0 +1,27 @@
+# prometheus/alerts.yml
+groups:
+  - name: ai-alerts
+    rules:
+      - alert: AIHighLatency
+        expr: histogram_quantile(0.95, rate(ai_response_duration_ms_bucket[5m])) > 10000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "AI p95 latency สูงเกิน 10 วินาที"
+          description: "Feature {{ $labels.feature }} latency: {{ $value }}ms"
+
+      - alert: AIHighErrorRate
+        expr: rate(ai_errors_total[5m]) / rate(ai_api_calls_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AI error rate เกิน 5%"
+
+      - alert: AIDailyCostOverrun
+        expr: increase(ai_estimated_cost_usd_total[24h]) > 100
+        labels:
+          severity: warning
+        annotations:
+          summary: "AI cost วันนี้เกิน $100"

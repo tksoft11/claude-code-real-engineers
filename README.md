@@ -1,93 +1,115 @@
-# Claude Code for Real Engineers — Book Repository
+# Claude Code for Real Engineers — Code Examples
 
-> **จาก Vibe Coder สู่ AI Engineer ระดับ Production**
-
-[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
----
-
-## 📖 เกี่ยวกับหนังสือ
-
-**Claude Code for Real Engineers** คือหนังสือภาษาไทยที่สอนการใช้ Claude Code อย่างเป็นระบบ ไม่ใช่แค่ "ถามแล้วก๊อปโค้ด" แต่เป็นการสร้างระบบ AI Engineering ที่ใช้งานจริงใน Production
-
-หนังสือแบ่งเป็น 4 Volumes, 47 บท:
-
-| Volume | ระดับ | บท | เนื้อหาหลัก |
-|--------|------|-----|-----------|
-| Volume 1 | Foundation & Mindset | 0–12 | Ralph Loop, CLAUDE.md, TDD กับ AI |
-| Volume 2 | Anthropic Ecosystem | 13–29 | Streaming, Caching, RAG, Tool Use |
-| Volume 3 | Enterprise AI & MCP | 30–42 | MCP Server, LangGraph, Mobile, CI/CD |
-| Volume 4 | AI Ops & Reliability | 43–47 | Observability, Fallback, On-Call, ROI |
+> Code ตัวอย่างประกอบหนังสือ **"Claude Code for Real Engineers"**
+> *(ซื้อหนังสือเพื่ออ่านเนื้อหาและคำอธิบาย)*
 
 ---
 
-## 📁 โครงสร้าง Repository
+## 📁 โครงสร้าง
 
 ```
-claude-code-real-engineers/
-├── book-factory/
-│   └── chapters/          ← ไฟล์ Markdown ทุกบท (00–49)
-│       ├── 00a_FrontMatter.md
-│       ├── 00_Introduction.md
-│       ├── 01_Chapter.md  ← บทที่ 1
-│       ├── ...
-│       ├── 47_Chapter.md  ← บทสุดท้าย
-│       ├── 48_Glossary.md ← อภิธานศัพท์
-│       └── 49_Index.md    ← ดัชนีค้นหา
-├── OUTLINE.md             ← แผนผังเนื้อหาทั้งหมด 47 บท
-├── STYLEGUIDE.md          ← มาตรฐานการเขียนหนังสือ
-└── README.md              ← ไฟล์นี้
+examples/
+├── ch01-mindset-shift/       # บทที่ 1
+├── ch02-setup-guardrails/    # บทที่ 2
+├── ch03-claude-md/           # บทที่ 3 — CLAUDE.md templates
+├── ch04-ralph-loop/          # บทที่ 4 — The Ralph Loop
+├── ...
+└── ch47-singularity/         # บทที่ 47
 ```
+
+แต่ละโฟลเดอร์มี `README.md` อธิบายไฟล์ และ Code files พร้อมรัน
 
 ---
 
-## 🚀 วิธีอ่าน
-
-### สำหรับผู้อ่าน
-
-ไฟล์ทั้งหมดเป็น Markdown อ่านได้โดยตรงบน GitHub หรือ Download มาอ่านใน VS Code / Obsidian
-
-**แนะนำลำดับการอ่าน:**
-- มือใหม่ Claude Code → เริ่มที่ `00_Introduction.md` → `01_Chapter.md` → ตามลำดับ
-- ใช้ Anthropic API อยู่แล้ว → ข้ามไป `13_Chapter.md` (Volume 2)
-- ต้องการ Enterprise Architecture → `30_Chapter.md` (Volume 3)
-- ดูแล Production System → `43_Chapter.md` (Volume 4)
-
-### สำหรับผู้ที่ต้องการรันโค้ด
-
-โค้ดตัวอย่างในหนังสือใช้ TypeScript/Python ต้องมี:
-- Node.js 20+
-- Python 3.11+ (บางบท)
-- `ANTHROPIC_API_KEY` ใน `.env`
+## ⚡ Quick Start
 
 ```bash
-# สร้าง .env จาก template
+# 1. Clone repo
+git clone https://github.com/tksoft11/claude-code-real-engineers.git
+cd claude-code-real-engineers
+
+# 2. ตั้ง API Key
 cp .env.example .env
-# ใส่ ANTHROPIC_API_KEY ของคุณ
+# แก้ไขใส่ ANTHROPIC_API_KEY ของคุณ
+
+# 3. ลองรัน TypeScript (ต้องมี Node.js 20+)
+cd examples/ch14-anthropic-sdk
+npm install
+npx ts-node 01.ts
+
+# 4. ลองรัน Python (ต้องมี Python 3.11+)
+cd examples/ch17-prompt-caching-batch
+pip install anthropic python-dotenv
+python 01.py
 ```
 
-> ⚠️ **ห้ามฝัง API Key ในโค้ดโดยตรงเด็ดขาด** — ดูบทที่ 2 สำหรับวิธีจัดการ Secrets อย่างปลอดภัย
+---
+
+## 📚 Code Examples ตามบท
+
+| บท | ชื่อ | ไฟล์ |
+|----|------|------|
+| 01 | Mindset Shift | [ch01](examples/ch01-mindset-shift/) |
+| 02 | Setup & Guardrails | [ch02](examples/ch02-setup-guardrails/) |
+| 03 | CLAUDE.md | [ch03](examples/ch03-claude-md/) |
+| 04 | The Ralph Loop | [ch04](examples/ch04-ralph-loop/) |
+| 05 | Skills & Custom Commands | [ch05](examples/ch05-skills-commands/) |
+| 06 | Context Management | [ch06](examples/ch06-context-management/) |
+| 07 | Debugging with AI | [ch07](examples/ch07-debugging-ai/) |
+| 08 | Legacy Code | [ch08](examples/ch08-legacy-code/) |
+| 09 | TDD กับ AI | [ch09](examples/ch09-tdd-ai/) |
+| 10 | Self-Healing Scripts | [ch10](examples/ch10-self-healing/) |
+| 11 | Autonomous Agent Loop | [ch11](examples/ch11-autonomous-agent/) |
+| 13 | Selling AI to Your Team | [ch13](examples/ch13-selling-ai/) |
+| 14 | Anthropic SDK | [ch14](examples/ch14-anthropic-sdk/) |
+| 15 | Streaming Responses | [ch15](examples/ch15-streaming/) |
+| 16 | Model Routing & Spend Limits | [ch16](examples/ch16-model-routing/) |
+| 17 | Prompt Caching & Batch API | [ch17](examples/ch17-prompt-caching-batch/) |
+| 18 | Context Trinity | [ch18](examples/ch18-context-trinity/) |
+| 19 | Advanced CLAUDE.md | [ch19](examples/ch19-advanced-claude-md/) |
+| 20 | Structured Outputs | [ch20](examples/ch20-structured-outputs/) |
+| 21 | AI Ethics & IP | [ch21](examples/ch21-ai-ethics/) |
+| 22 | Tool Use | [ch22](examples/ch22-tool-use/) |
+| 23 | Computer Use | [ch23](examples/ch23-computer-use/) |
+| 24 | Claude Vision API | [ch24](examples/ch24-claude-vision/) |
+| 25 | Memory & Vector DB | [ch25](examples/ch25-memory-vector-db/) |
+| 26 | RAG Pipeline | [ch26](examples/ch26-rag-pipeline/) |
+| 27 | CLI AI Assistant | [ch27](examples/ch27-cli-assistant/) |
+| 28 | Assertion Loop | [ch28](examples/ch28-assertion-loop/) |
+| 29 | AI-Powered SaaS Backend | [ch29](examples/ch29-saas-backend/) |
+| 30 | MCP 101 | [ch30](examples/ch30-mcp-101/) |
+| 31 | Building MCP Server | [ch31](examples/ch31-mcp-server/) |
+| 32 | Defensive AI | [ch32](examples/ch32-defensive-ai/) |
+| 33 | Security & RBAC | [ch33](examples/ch33-security-rbac/) |
+| 34 | Multi-Agent Orchestration | [ch34](examples/ch34-multi-agent/) |
+| 35 | Team Context | [ch35](examples/ch35-team-context/) |
+| 36 | AI in CI/CD | [ch36](examples/ch36-ci-cd/) |
+| 37 | Database Migration Safety | [ch37](examples/ch37-db-migration/) |
+| 38 | Mobile AI Architecture | [ch38](examples/ch38-mobile-ai/) |
+| 39 | React Native & Claude | [ch39](examples/ch39-react-native/) |
+| 40 | App Store Compliance | [ch40](examples/ch40-app-store/) |
+| 41 | The Fastlane Automator | [ch41](examples/ch41-fastlane/) |
+| 42 | Enterprise Auto-Fix Pipeline | [ch42](examples/ch42-auto-fix-pipeline/) |
+| 43 | LLM Observability & Tracing | [ch43](examples/ch43-llm-observability/) |
+| 44 | Graceful AI Degradation | [ch44](examples/ch44-graceful-degradation/) |
+| 45 | AI On-Call & Incident Response | [ch45](examples/ch45-on-call-incident/) |
+| 46 | Measuring & Reporting AI ROI | [ch46](examples/ch46-ai-roi/) |
+| 47 | The Singularity of Engineering | [ch47](examples/ch47-singularity/) |
 
 ---
 
-## 📜 License
+## 🔑 Requirements
 
-**เนื้อหาหนังสือ** (ไฟล์ `.md` ใน `book-factory/chapters/`) เผยแพร่ภายใต้:
-[Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+- **Node.js** 20+ (TypeScript examples)
+- **Python** 3.11+ (Python examples)
+- **Anthropic API Key** — ดูที่ [console.anthropic.com](https://console.anthropic.com)
 
-- ✅ อ่านได้ แชร์ได้ โดยต้องระบุแหล่งที่มา
-- ❌ ห้ามนำไปขาย หรือดัดแปลงเพื่อจำหน่าย
-
-**โค้ดตัวอย่าง** ในหนังสือเผยแพร่ภายใต้ **MIT License** — นำไปใช้ในโปรเจกต์เชิงพาณิชย์ได้
-
----
-
-## 🔗 ลิงก์สำคัญ
-
-- [Anthropic API Docs](https://docs.anthropic.com)
-- [Claude Code Documentation](https://docs.anthropic.com/claude-code)
-- [Glossary (Wiki)](https://github.com/tksoft11/claude-code-real-engineers/wiki/glossary)
+```bash
+# ตรวจสอบ .env ก่อนรันเสมอ
+cat .env.example
+```
 
 ---
 
-*สร้างด้วย ❤️ และ Claude Code — สำหรับ Engineer ที่อยากให้ AI ทำงานแทน ไม่ใช่แค่ช่วยพิมพ์*
+*Code Examples เผยแพร่ภายใต้ MIT License — นำไปใช้ในโปรเจกต์เชิงพาณิชย์ได้*
+*เนื้อหาหนังสือ (คำอธิบาย, แนวคิด, กลยุทธ์) สงวนลิขสิทธิ์*

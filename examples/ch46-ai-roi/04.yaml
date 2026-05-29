@@ -1,0 +1,63 @@
+# .github/workflows/monthly-roi-report.yml
+name: Monthly AI ROI Report
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'  # ทุกวันที่ 1 ของเดือน เวลา 09:00 น.
+  workflow_dispatch:
+    inputs:
+      month_override:
+        description: 'Override month (YYYY-MM), leave blank for last month'
+        required: false
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write      # สำหรับดึงข้อมูล Issues
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Generate ROI Report
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_ADMIN_KEY: ${{ secrets.ANTHROPIC_ADMIN_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPO: ${{ github.event.repository.name }}
+          DEV_RATE_THB: '500'
+          ESTIMATED_MONTHLY_COST_USD: '150'
+        run: npx ts-node tools/roi-reporter/generateROIReport.ts
+
+      - name: Send to Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          MONTH=$(date -d "last month" +"%B %Y" 2>/dev/null || date -v-1m +"%B %Y")
+          REPORT_FILE=$(ls roi-report-*.md 2>/dev/null | head -1)
+
+          if [ -n "$REPORT_FILE" ]; then
+            # ดึง Executive Summary แค่ส่วนแรก (5 บรรทัดแรก)
+            SUMMARY=$(head -n 10 "$REPORT_FILE")
+            PAYLOAD=$(jq -n \
+              --arg text "📊 *AI ROI Report — $MONTH*\n\n$SUMMARY\n\n_ดูรายงานเต็มใน GitHub Actions Artifacts_" \
+              '{"text": $text}')
+            curl -s -X POST "$SLACK_WEBHOOK" -H 'Content-type: application/json' -d "$PAYLOAD"
+          fi
+
+      - name: Upload Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: roi-report
+          path: roi-report-*.md
+          retention-days: 90

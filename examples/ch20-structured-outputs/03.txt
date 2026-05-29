@@ -1,0 +1,9 @@
+
+> **เทคนิค Assistant Pre-fill:** ใส่ `{ role: 'assistant', content: '{' }` เป็น message สุดท้ายก่อนส่ง Claude จะต่อจากนั้นเสมอ → รับประกันว่าเริ่มด้วย `{`
+
+---
+
+## 🛡️ Level 3: Schema + Validation (Production-Grade)
+
+ใช้ **Zod** validate ทุก response — วิธีที่ดีที่สุดสำหรับ Production:
+

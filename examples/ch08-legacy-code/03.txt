@@ -1,0 +1,22 @@
+// Characterization Test — บันทึกพฤติกรรมปัจจุบัน
+// หมายเหตุ: เราไม่รู้ว่า output ถูกหรือผิด แค่บันทึกไว้
+class OrderCalculatorCharacterizationTest extends TestCase
+{
+    /** @test */
+    public function it_returns_zero_for_empty_cart()
+    {
+        $calc = new OrderCalculator();
+        // บันทึก: function นี้ return 0 เมื่อ cart ว่าง
+        $this->assertEquals(0, $calc->calculate([]));
+    }
+
+    /** @test */
+    public function it_applies_mysterious_15_percent_on_sundays()
+    {
+        // บันทึก: พบว่ามีการคูณด้วย 1.15 เฉพาะวันอาทิตย์
+        // เหตุผลไม่ทราบ — อาจเป็น business rule ที่ไม่ได้ document
+        $this->travelTo(Carbon::parse('2025-03-09')); // วันอาทิตย์
+        $calc = new OrderCalculator();
+        $this->assertEquals(115.0, $calc->calculate([['price' => 100]]));
+    }
+}

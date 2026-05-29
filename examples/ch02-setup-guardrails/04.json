@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(src/**)",
+      "Write(tests/**)",
+      "Write(TASKS.md)",
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(git status)",
+      "Bash(git diff)"
+    ],
+    "deny": [
+      "Bash(git push)",
+      "Bash(npm run deploy)",
+      "Bash(DROP*)",
+      "Write(.env*)",
+      "Write(prisma/migrations/**)"
+    ]
+  }
+}

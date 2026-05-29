@@ -1,0 +1,7 @@
+
+---
+
+## 🏗️ Structured Output Patterns ขั้นสูง
+
+### Pattern 1: Nested Schema
+

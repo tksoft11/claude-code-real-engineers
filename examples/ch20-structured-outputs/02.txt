@@ -1,0 +1,7 @@
+
+---
+
+## 🔒 Level 2: JSON Mode (Reliable)
+
+บังคับ valid JSON ด้วยการใช้ stop sequence:
+

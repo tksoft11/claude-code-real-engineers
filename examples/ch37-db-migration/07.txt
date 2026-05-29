@@ -1,0 +1,7 @@
+
+---
+
+## 🛡️ Expand-Contract Pattern — วิธีที่ถูกต้อง
+
+เมื่อ AI บอกว่ามี breaking changes ให้ใช้ pattern นี้แทน:
+

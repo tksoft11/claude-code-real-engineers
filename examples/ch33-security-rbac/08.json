@@ -1,0 +1,16 @@
+// ~/.claude/settings.json
+{
+  "mcpServers": {
+    "company-tools": {
+      "command": "node",
+      "args": ["/Users/username/company-mcp/dist/index.js"],
+      "env": {
+        "USER_ID": "EMP-042",
+        "USERNAME": "bee.developer",
+        "USER_ROLE": "junior_dev",
+        "HR_API_URL": "...",
+        "AUDIT_LOG_PATH": "/var/log/mcp/ai-audit.jsonl"
+      }
+    }
+  }
+}

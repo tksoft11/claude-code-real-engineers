@@ -1,0 +1,19 @@
+// .github/scripts/ai-review/package.json
+{
+  "name": "ai-review",
+  "version": "1.0.0",
+  "scripts": {
+    "review": "ts-node index.ts",
+    "review:local": "DIFF_PATH=./test.diff PR_NUMBER=1 REPO=owner/repo ts-node index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@octokit/rest": "^21.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0",
+    "@types/node": "^20.0.0"
+  }
+}

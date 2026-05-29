@@ -1,0 +1,53 @@
+# .github/workflows/migration-safety.yml
+name: Database Migration Safety Check
+
+on:
+  pull_request:
+    paths:
+      - 'migrations/**'
+      - 'db/migrate/**'
+      - '**/*migration*.sql'
+
+jobs:
+  migration-safety:
+    name: Analyze Migration Safety
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '.github/scripts/migration-safety/package.json'
+
+      - name: Install dependencies
+        working-directory: .github/scripts/migration-safety
+        run: npm ci
+
+      - name: Find changed migration files
+        id: find-migrations
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -E '\.(sql)$|migration' | tr '\n' ',')
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          echo "Found migrations: $FILES"
+
+      - name: Run Migration Safety Analysis
+        working-directory: .github/scripts/migration-safety
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MIGRATION_FILES: ${{ steps.find-migrations.outputs.files }}
+          REPO_ROOT: ${{ github.workspace }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: npx ts-node index.ts

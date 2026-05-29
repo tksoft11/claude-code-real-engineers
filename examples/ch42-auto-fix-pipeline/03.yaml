@@ -1,0 +1,101 @@
+# .github/workflows/auto-fix.yml
+name: Autonomous Auto-Fix Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      errorMessage:
+        description: 'Error message from Sentry/Alert system'
+        required: true
+      stackTrace:
+        description: 'Stack trace details'
+        required: true
+      filePath:
+        description: 'Target file location'
+        required: false
+      lineNumber:
+        description: 'Line number'
+        required: false
+
+jobs:
+  healing-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Execute Autonomous Healing Loop
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ERROR_MSG: ${{ github.event.inputs.errorMessage }}
+          STACK_TRACE: ${{ github.event.inputs.stackTrace }}
+          TARGET_FILE: ${{ github.event.inputs.filePath }}
+        run: |
+          # สร้าง Branch ใหม่สไตล์ Micro-branching เพื่อกันสับสน
+          BRANCH_NAME="fix/auto-heal-$(date +%s)"
+          git checkout -b $BRANCH_NAME
+          
+          # ส่งคำสั่งให้บอท Claude ผ่าน CLI เพื่อค้นหาสาเหตุและแก้บั๊กแบบปิดลูป
+          # บังคับกติกา: เขียนเทสก่อน -> แก้ไข -> รันเทสผ่าน -> อัปเดตตั๋วงาน
+          claude "อ่านรายงานข้อผิดพลาดนี้: '$ERROR_MSG'
+          Stack Trace:
+          $STACK_TRACE
+          
+          พิกัดความเสียหายที่อาจเกิดขึ้น: $TARGET_FILE
+          
+          คำสั่งบังคับ:
+          1. ไปที่โฟลเดอร์ทดสอบ เขียน Unit test ทวนสอบปัญหาในไฟล์ที่เหมาะสมเพื่อสร้างการทวนสอบย้อนกลับ (Regression Test)
+          2. แก้ไขโค้ดในจุดที่ผิดพลาด
+          3. รันคำสั่ง 'npm test' เพื่อทดสอบให้มั่นใจว่าเทสใหม่และเทสเดิมผ่าน 100%
+          4. เมื่อตรวจสอบผ่านทั้งหมดแล้ว ให้พิมพ์ข้อความสั้นๆ อธิบายสิ่งที่ทำ"
+          
+          # ตรวจสอบการเปลี่ยนแปลงของ Git
+          git status
+          
+          # ตั้งค่า Git config ชี้ว่าเป็นบอท
+          git config --global user.name "AI Auto-Healer Bot"
+          git config --global user.email "bot@your-company.com"
+          
+          # Commit และ Push โค้ดขึ้นรีโมต
+          git add -A
+          git commit -m "fix(auto-heal): แก้ไขบั๊กอัตโนมัติสำหรับ $ERROR_MSG"
+          git push origin $BRANCH_NAME
+          
+          # ดึงค่า Branch name ออกไปใช้ในสเต็ปสร้าง PR
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Create Pull Request with GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ERROR_MSG: ${{ github.event.inputs.errorMessage }}
+        run: |
+          gh pr create \
+            --title "🤖 AI Auto-Fix: แก้บั๊ก $ERROR_MSG" \
+            --body "### ระบบตรวจพบบั๊กและทำการแก้ไขอัตโนมัติเรียบร้อยแล้ว
+            
+            **รายละเอียดข้อผิดพลาด:**
+            - **ข้อความ:** $ERROR_MSG
+            
+            **งานที่ดำเนินการ:**
+            - [x] เขียน Unit test ทวนสอบปัญหาเพื่อกันการกลับมาเกิดซ้ำ
+            - [x] แก้ไขซอร์สโค้ดในจุดเกิดเหตุ
+            - [x] รันชุดทดสอบ 'npm test' ผ่านเรียบร้อยแล้ว
+            
+            *กรุณาตรวจสอบโค้ดและยืนยันการ Merge ขึ้นระบบหลักต่อไปครับ*" \
+            --base main \
+            --head ${{ env.BRANCH_NAME }}

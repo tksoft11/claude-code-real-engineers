@@ -1,0 +1,17 @@
+
+## 📱 Responsive Breakpoints
+Mobile:  < 640px   (default)
+Tablet:  ≥ 640px   (sm:)
+Desktop: ≥ 1024px  (lg:)
+
+## ♿ Accessibility Requirements
+- ทุก button ต้องมี aria-label หรือ meaningful text
+- ทุก input ต้องมี associated label
+- Color contrast ratio: minimum 4.5:1
+- Focus indicator ต้องเห็นได้ชัด
+
+## 🚫 Design Anti-Patterns (ห้ามทำ)
+- ห้าม hardcode colors นอกจาก Design Tokens
+- ห้าม inline styles
+- ห้ามสร้าง component ใหม่ถ้ามีใน library แล้ว
+- ห้ามใช้ px ขนาดใหญ่ให้ใช้ rem แทน

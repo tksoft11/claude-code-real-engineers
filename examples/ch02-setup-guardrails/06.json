@@ -1,0 +1,6 @@
+// รูปแบบ: "Action(Pattern)"
+"Read(**)"              // อ่านทุกไฟล์ในทุก directory
+"Read(src/**)"          // อ่านเฉพาะใน src/
+"Write(src/**/*.ts)"    // เขียนได้เฉพาะ .ts ใน src/
+"Bash(npm *)"           // รันได้เฉพาะคำสั่ง npm
+"Bash(git diff)"        // รันได้เฉพาะคำสั่งนี้เป๊ะๆ

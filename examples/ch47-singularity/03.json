@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "tsc",
+    "test": "jest --coverage",
+    "ai:health": "ts-node scripts/ai-health-check.ts",
+    "ai:roi": "ts-node tools/roi-reporter/generateROIReport.ts",
+    "pre-commit": "npm run ai:health && npm test",
+    "lint": "eslint src --ext .ts"
+  }
+}

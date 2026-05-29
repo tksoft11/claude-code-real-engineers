@@ -1,0 +1,25 @@
+Feature: Shipping Cost Calculation
+
+  Scenario: Free shipping for orders over 1,000 baht
+    Given a customer with standard membership
+    And a cart with total 1,200 baht
+    When calculating shipping cost
+    Then shipping cost should be 0 baht
+
+  Scenario: Gold members always get free shipping
+    Given a customer with Gold membership
+    And a cart with total 500 baht
+    When calculating shipping cost
+    Then shipping cost should be 0 baht
+
+  Scenario: Fragile items incur additional fee
+    Given a customer with standard membership
+    And a cart with a fragile item worth 200 baht
+    When calculating shipping cost
+    Then shipping cost should include 50 baht fragile surcharge
+
+  Scenario: Combined rules - Gold member with fragile item
+    Given a customer with Gold membership
+    And a cart with a fragile item
+    When calculating shipping cost
+    Then shipping cost should be 50 baht (only fragile surcharge, no base shipping)

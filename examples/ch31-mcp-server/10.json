@@ -1,0 +1,17 @@
+// ~/.claude/settings.json — เพิ่ม company MCP Server
+{
+  "mcpServers": {
+    "company-tools": {
+      "command": "node",
+      "args": ["/Users/username/company-mcp/dist/index.js"],
+      "env": {
+        "HR_API_URL": "https://hr.company.internal/api",
+        "HR_API_KEY": "your-hr-service-account-key",
+        "PM_API_URL": "https://pm.company.internal/api",
+        "PM_API_KEY": "your-pm-key",
+        "DOCS_API_URL": "https://docs.company.internal/api",
+        "DOCS_API_KEY": "your-docs-key"
+      }
+    }
+  }
+}

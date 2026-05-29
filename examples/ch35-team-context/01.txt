@@ -1,0 +1,8 @@
+graph TD
+    A[Human Developer] -->|สั่ง| B(AI Agent A)
+    C[Human Developer B] -->|สั่ง| D(AI Agent B)
+    B -->|แก้โค้ด + TASKS.md| E[Local Branch A]
+    D -->|แก้โค้ด + TASKS.md| F[Local Branch B]
+    E -->|Push & Merge| G{GitHub Repository}
+    F -->|Push & Merge| G
+    G -->|เกิด Conflict ยับเยิน| H[Context Clash]

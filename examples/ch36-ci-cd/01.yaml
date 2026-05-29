@@ -1,0 +1,89 @@
+# .github/workflows/ai-review.yml
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop, 'release/**']
+
+# ป้องกัน run ซ้อนกัน
+concurrency:
+  group: ai-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  ai-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '.github/scripts/ai-review/package.json'
+
+      - name: Install AI review dependencies
+        working-directory: .github/scripts/ai-review
+        run: npm ci
+
+      - name: Calculate PR diff size
+        id: pr-size
+        run: |
+          LINES=$(git diff origin/${{ github.base_ref }}...HEAD | wc -l)
+          echo "diff_lines=$LINES" >> $GITHUB_OUTPUT
+          echo "PR diff size: $LINES lines"
+
+      - name: Select AI model based on PR size
+        id: model-select
+        run: |
+          LINES=${{ steps.pr-size.outputs.diff_lines }}
+          if [ "$LINES" -gt 3000 ]; then
+            echo "model=claude-haiku-4-5" >> $GITHUB_OUTPUT
+            echo "reason=Large PR (${LINES} lines): using Haiku for cost control" >> $GITHUB_OUTPUT
+          elif [ "$LINES" -gt 1000 ]; then
+            echo "model=claude-sonnet-4-5" >> $GITHUB_OUTPUT
+            echo "reason=Medium PR (${LINES} lines): using Sonnet" >> $GITHUB_OUTPUT
+          else
+            echo "model=claude-sonnet-4-5" >> $GITHUB_OUTPUT
+            echo "reason=Small PR (${LINES} lines): using Sonnet" >> $GITHUB_OUTPUT
+          fi
+          echo "${{ steps.model-select.outputs.reason }}"
+
+      - name: Generate AI diff
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD > /tmp/pr.diff
+          echo "Diff generated: $(wc -c < /tmp/pr.diff) bytes"
+
+      - name: Run AI Code Review
+        working-directory: .github/scripts/ai-review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPO: ${{ github.repository }}
+          AI_MODEL: ${{ steps.model-select.outputs.model }}
+          DIFF_PATH: /tmp/pr.diff
+        run: npx ts-node index.ts
+
+      - name: Upload review artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-review-${{ github.event.pull_request.number }}
+          path: /tmp/ai-review-result.json
+          retention-days: 30

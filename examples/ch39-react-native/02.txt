@@ -1,0 +1,102 @@
+// mobile/src/screens/ChatScreen.tsx
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View, Text, TextInput, TouchableOpacity,
+  FlatList, ActivityIndicator, StyleSheet, KeyboardAvoidingView, Platform,
+} from 'react-native';
+import { useAIChat } from '../hooks/useAIChat';
+
+export function ChatScreen() {
+  const [inputText, setInputText] = useState('');
+  const flatListRef = useRef<FlatList>(null);
+  const { messages, isLoading, error, sendMessage, cancelStream, clearChat } = useAIChat(
+    'คุณคือ AI assistant ที่ตอบคำถามเป็นภาษาไทย กระชับ และเป็นมิตร'
+  );
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+    }
+  }, [messages]);
+
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+    sendMessage(inputText.trim());
+    setInputText('');
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <FlatList
+        ref={flatListRef}
+        data={messages}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <View style={[
+            styles.bubble,
+            item.role === 'user' ? styles.userBubble : styles.aiBubble,
+          ]}>
+            <Text style={styles.bubbleText}>
+              {item.content}
+              {item.isStreaming && <Text style={styles.cursor}>▍</Text>}
+            </Text>
+          </View>
+        )}
+        contentContainerStyle={styles.messageList}
+      />
+
+      {error && (
+        <View style={styles.errorBanner}>
+          <Text style={styles.errorText}>⚠️ {error}</Text>
+        </View>
+      )}
+
+      <View style={styles.inputRow}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="พิมพ์ข้อความ..."
+          multiline
+          onSubmitEditing={handleSend}
+          editable={!isLoading}
+        />
+        {isLoading ? (
+          <TouchableOpacity style={styles.cancelBtn} onPress={cancelStream}>
+            <Text style={styles.cancelText}>⏹</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.sendBtn, !inputText.trim() && styles.sendBtnDisabled]}
+            onPress={handleSend}
+            disabled={!inputText.trim()}
+          >
+            <Text style={styles.sendText}>➤</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  messageList: { padding: 16, gap: 8 },
+  bubble: { maxWidth: '80%', padding: 12, borderRadius: 16, marginVertical: 4 },
+  userBubble: { backgroundColor: '#007AFF', alignSelf: 'flex-end' },
+  aiBubble: { backgroundColor: '#fff', alignSelf: 'flex-start', elevation: 1 },
+  bubbleText: { fontSize: 16, color: '#000' },
+  cursor: { color: '#007AFF' },
+  errorBanner: { backgroundColor: '#FFE5E5', padding: 8, margin: 8, borderRadius: 8 },
+  errorText: { color: '#D00', textAlign: 'center' },
+  inputRow: { flexDirection: 'row', padding: 8, gap: 8, backgroundColor: '#fff' },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ddd', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, maxHeight: 120 },
+  sendBtn: { width: 44, height: 44, backgroundColor: '#007AFF', borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  sendBtnDisabled: { backgroundColor: '#ccc' },
+  sendText: { color: '#fff', fontSize: 18 },
+  cancelBtn: { width: 44, height: 44, backgroundColor: '#FF3B30', borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  cancelText: { color: '#fff', fontSize: 18 },
+});

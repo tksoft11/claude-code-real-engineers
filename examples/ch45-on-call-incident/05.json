@@ -1,0 +1,47 @@
+// oncall-bot/src/runbooks/playbook.json
+{
+  "version": "1.0",
+  "runbooks": [
+    {
+      "trigger": "DB Connection Pool Exhausted",
+      "keywords": ["connection pool", "exhausted", "timeout acquiring connection"],
+      "actions": [
+        {
+          "step": 1,
+          "tool": "run_safe_runbook_action",
+          "action": "restart_service",
+          "target": "connection-pool-manager",
+          "description": "Restart the DB connection pool manager service"
+        }
+      ],
+      "escalate_if": "Service not recovered within 2 minutes"
+    },
+    {
+      "trigger": "High Memory Usage",
+      "keywords": ["OOMKilled", "memory", "limit exceeded"],
+      "actions": [
+        {
+          "step": 1,
+          "tool": "run_safe_runbook_action",
+          "action": "scale_pods",
+          "target": "affected-service",
+          "parameters": { "replica_count": 5 }
+        }
+      ],
+      "escalate_if": "Memory usage still > 85% after scaling"
+    },
+    {
+      "trigger": "Cache Miss Spike",
+      "keywords": ["cache miss", "redis timeout", "cache unavailable"],
+      "actions": [
+        {
+          "step": 1,
+          "tool": "run_safe_runbook_action",
+          "action": "clear_cache",
+          "target": "redis-primary"
+        }
+      ],
+      "escalate_if": "Never — cache clear is always safe"
+    }
+  ]
+}

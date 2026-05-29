@@ -1,0 +1,17 @@
+"อ่าน database schema จาก [schema file หรือ describe tables]
+ สร้าง docs/DATABASE.md ที่อธิบาย:
+
+ ## Tables
+ สำหรับแต่ละ table:
+ - ทำหน้าที่อะไร
+ - columns สำคัญหมายถึงอะไร (เดาจาก usage patterns ในโค้ด)
+ - relationships กับ tables อื่น
+
+ ## Suspicious Patterns
+ - columns ที่ชื่อคลุมเครือ
+ - tables ที่อาจ obsolete (ไม่มีโค้ดใช้)
+ - missing indexes ที่น่าจะต้องการ
+
+ ## Risk Assessment
+ - tables ที่เสี่ยงที่สุดถ้าแก้ data schema
+ - ลำดับที่ควร migrate ถ้าจะ refactor"

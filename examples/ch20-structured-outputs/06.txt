@@ -1,0 +1,7 @@
+
+---
+
+## 💻 Hands-On: Invoice Parser
+
+**สร้างระบบแปลงข้อความ invoice → structured data:**
+

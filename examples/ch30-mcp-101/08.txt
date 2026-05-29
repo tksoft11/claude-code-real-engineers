@@ -1,0 +1,9 @@
+claude
+# (มี filesystem + github + postgres MCP configured)
+
+คุณ:
+"ฉันกำลัง debug bug ใน payment service
+อ่านไฟล์ src/services/payment.service.ts
+แล้ว query database ดูว่า orders ที่ status='failed' ในช่วง 24 ชั่วโมงที่ผ่านมามีกี่อัน
+และดู issues บน GitHub ที่ label 'payment' ที่ยังไม่ resolve
+สรุปให้ฉันเห็นภาพรวมว่า bug นี้น่าจะอยู่ตรงไหน"
